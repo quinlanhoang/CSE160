@@ -1,56 +1,56 @@
-<!DOCTYPE html>
-<html>
-<head>
-   <meta charset="utf-8" />
-   <title> asg0 : Quinlan Hoang</title>
-</head>
+   <!DOCTYPE html>
+   <html>
+   <head>
+      <meta charset="utf-8" />
+      <title> asg0 : Quinlan Hoang</title>
+   </head>
 
-<body onload="main()">
-   <canvas id="asg0" width="400" height="400" style="border:1px solid #000000;">
+   <body onload="main()">
+      <canvas id="asg0" width="400" height="400" style="border:1px solid #000000;">
 
-   </canvas>
+      </canvas>
 
-   <br>
-   <!-- Vector 1 -->
-   <label for="v1">v1: x</label>
-   <input type="text" id="xcoord" name="xcoord">
-   <label for="v1"> y</label>
-   <input type="text" id="ycoord" name="ycoord">
-   <br>
+      <br>
+      <!-- Vector 1 -->
+      <label for="v1">v1: x</label>
+      <input type="text" id="xcoord" name="xcoord">
+      <label for="v1"> y</label>
+      <input type="text" id="ycoord" name="ycoord">
+      <br>
 
-   <!-- Vector 2 -->
-   <label for="v1">v2: x</label>
-   <input type="text" id="xcoord2" name="xcoord">
-   <label for="v1"> y</label>
-   <input type="text" id="ycoord2" name="ycoord">
-   <br>
+      <!-- Vector 2 -->
+      <label for="v1">v2: x</label>
+      <input type="text" id="xcoord2" name="xcoord">
+      <label for="v1"> y</label>
+      <input type="text" id="ycoord2" name="ycoord">
+      <br>
 
-   <!-- Draw Button -->
-   <button onclick="handleDrawEvent()">Draw</button>
-   <br> <br>
-   <!-- Operation -->
-   <label for="opt">Operation: </label>
-   <select id="opt">
-     <option value="Add">Add</option>
-     <option value="Subtract">Subtract</option>
-     <option value="Multiply">Multiply</option>
-     <option value="Divide">Divide</option>
-     <option value="Mag">Magnitude</option>
-     <option value="Norm">Normalize</option>
-     <option value="Ang">Angle between</option>
-     <option value="Area">Area</option>
-   </select>
+      <!-- Draw Button -->
+      <button onclick="handleDrawEvent()">Draw</button>
+      <br> <br>
+      <!-- Operation -->
+      <label for="opt">Operation: </label>
+      <select id="opt">
+      <option value="Add">Add</option>
+      <option value="Subtract">Subtract</option>
+      <option value="Multiply">Multiply</option>
+      <option value="Divide">Divide</option>
+      <option value="Mag">Magnitude</option>
+      <option value="Norm">Normalize</option>
+      <option value="Ang">Angle between</option>
+      <option value="Area">Area</option>
+      </select>
 
-   <!-- Scalar -->
-   <label for="opt">Scalar: </label>
-   <input type="text" id="scalar" name="scalar">
-   <br>
+      <!-- Scalar -->
+      <label for="opt">Scalar: </label>
+      <input type="text" id="scalar" name="scalar">
+      <br>
 
-   <!-- Draw 2 Button -->
-   <button onclick="handleDrawOperationEvent()">Draw</button>
+      <!-- Draw 2 Button -->
+      <button onclick="handleDrawOperationEvent()">Draw</button>
 
-   <script src="lib/cuon-matrix-cse160.js"></script>
-   <script type=text/javascript src="asg0.js"></script>
+      <script src="lib/cuon-matrix-cse160.js"></script>
+      <script type=text/javascript src="asg0.js"></script>
 
-</body>
-</html>
+   </body>
+   </html>
