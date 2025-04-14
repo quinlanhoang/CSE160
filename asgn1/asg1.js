@@ -51,8 +51,8 @@ function addActionsForHtmlUI(){
    document.getElementById('hourglass').onclick = function() { g_selectedType = POINT;    g_outline = 1;};
    document.getElementById('otriangle').onclick = function() { g_selectedType = TRIANGLE; g_outline = 1;};
    document.getElementById('ocircle').onclick   = function() { g_selectedType = CIRCLE;   g_outline = 1;};
-   document.getElementById('fox').onclick = function() {
-      drawFox();
+   document.getElementById('horse').onclick = function() {
+      drawHorse();
    };
 
    // Color Slider Events
