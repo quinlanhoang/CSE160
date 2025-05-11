@@ -253,7 +253,7 @@ function initTextures(){
     // Register the event handler to be called on loading an image
     image1.onload = function(){ sendTextureToTEXTURE1(image1); };
     // Tell the browser to load
-    image1.src = 'sand.jpeg';
+    image1.src = 'sand.webp';
     
     //-------------------------------- image 2 --------------------------------
     var image2 = new Image();
@@ -264,22 +264,8 @@ function initTextures(){
     // Register the event handler to be called on loading an image
     image2.onload = function(){ sendTextureToTEXTURE2(image2); };
     // Tell the browser to load
-    // image2.src = 'lava.jpeg';
     image2.src = 'magma.png';
-
-    //-------------------------------- image 3 --------------------------------
-    // var image3 = new Image();
-    // if(!image3){
-    //     console.log('Failed to create the image3 object');
-    //     return false;
-    // }
-
-    // // Register the event handler to be called on loading an image
-    // image3.onload = function(){ sendTextureToTEXTURE3(image3); };
-    // // Tell the browser to load
-    // image3.src = 'lava.jpeg';
     
-
     return true;
 }
 
