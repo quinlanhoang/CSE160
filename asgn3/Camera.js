@@ -86,4 +86,20 @@ class Camera{
        this.at.elements[1]  -= 1;
    }
 
+   rotateLeftRight(angleDegrees) {
+      const f = this.at.sub(this.eye);
+      const rotationMatrix = new Matrix4().setRotate(angleDegrees, this.up.elements[0], this.up.elements[1], this.up.elements[2]);
+      const f_prime = rotationMatrix.multiplyVector3(f);
+      this.at = this.eye.add(f_prime);
+    }
+    
+    rotateUpDown(angleDegrees) {
+      const f = this.at.sub(this.eye);
+      const s = Vector3.cross(f, this.up).normalize();  // side vector
+      const rotationMatrix = new Matrix4().setRotate(angleDegrees, s.elements[0], s.elements[1], s.elements[2]);
+      const f_prime = rotationMatrix.multiplyVector3(f);
+      this.at = this.eye.add(f_prime);
+    }
+    
+
 }
