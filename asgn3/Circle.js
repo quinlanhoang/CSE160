@@ -1,34 +1,162 @@
-class Circle{
+class Cube{
+   // construct new triangle object 
    constructor(){
-      this.type='circle';
-      this.position = [0.0, 0.0, 0.0];
-      this.color = [1.0, 1.0, 1.0, 1.0];
-      this.size = 5.0;
-      this.sCount = 12;
+       this.type       = 'cube';
+       this.color      = [1.0,1.0,1.0,1.0];
+       this.matrix     = new Matrix4();
+       this.textureNum = -2;
+       this.verts = [
+           // Front of cube
+           0,0,0, 1,1,0, 1,0,0,
+           0,0,0, 0,1,0, 1,1,0,
+
+           // Top of cube
+           0,1,0, 0,1,1, 1,1,1,
+           0,1,0, 1,1,1, 1,1,0,
+
+           // Bottom of cube
+           0,1,0, 0,1,1, 1,1,1,
+           0,1,0, 1,1,1, 1,1,0,
+
+           // Left side of cube
+           1,0,0, 1,1,1, 1,1,0,
+           1,0,0, 1,0,1, 1,1,1,
+
+           // Right side of cube
+           0,0,0, 0,1,1, 0,1,0,
+           0,0,0, 0,0,1, 0,1,1,
+           
+           // Back of cube 
+           0,0,1, 1,1,1, 0,1,1,
+           0,0,1, 1,0,1, 1,1,1
+       ];
+       this.vert32bit = new Float32Array([
+           0,0,0, 1,1,0, 1,0,0,
+           0,0,0, 0,1,0, 1,1,0,
+   
+           0,1,0, 0,1,1, 1,1,1,
+           0,1,0, 1,1,1, 1,1,0,
+   
+           0,1,0, 0,1,1, 1,1,1,
+           0,1,0, 1,1,1, 1,1,0,
+   
+           0,0,0, 1,0,1, 0,0,1,
+           0,0,0, 1,0,0, 1,0,1,
+   
+           1,0,0, 1,1,1, 1,1,0,
+           1,0,0, 1,0,1, 1,1,1,
+   
+           0,0,1, 1,1,1, 0,1,1,
+           0,0,1, 1,0,1, 1,1,1
+       ]);
+       this.uvVerts  = [
+           0,0, 1,1, 1,0,  0,0, 0,1, 1,1,
+           0,0, 1,1, 1,0,  0,0, 0,1, 1,1,
+           0,0, 1,1, 1,0,  0,0, 0,1, 1,1,
+           0,0, 1,1, 1,0,  0,0, 0,1, 1,1,
+           0,0, 1,1, 1,0,  0,0, 0,1, 1,1,
+           0,0, 1,1, 1,0,  0,0, 0,1, 1,1
+       ];
    }
 
-   render() {
-      var xy = this.position;
-      var rgba = this.color;
-      var size = this.size;
+   render(){
+       var rgba = this.color;                                           // set rgba to the ith point's color field
+       
+       // Pass the texture number
+       gl.uniform1i(u_whichTexture, this.textureNum);
+       // Pass the color of point to u_FragColor
+       gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);  
+       // Pass the matrix to u_ModelMatrix attribute 
+       gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+       
+       // Front of cube
+       drawTriangle3DUV([0,0,0,  1,1,0,  1,0,0], [0,0, 1,1, 1,0]);
+       drawTriangle3DUV([0,0,0,  0,1,0,  1,1,0], [0,0, 0,1, 1,1]);
 
-      // Pass the color of a point to u_FragColor variable
-      gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
+       // Top of cube
+       gl.uniform4f(u_FragColor, rgba[0]*.9, rgba[1]*.9, rgba[2]*.9, rgba[3]);
+       drawTriangle3DUV([0,1,0,  1,1,1,  1,1,0], [0,0, 1,1, 1,0]);
+       drawTriangle3DUV([0,1,0,  0,1,1,  1,1,1], [0,0, 0,1, 1,1]);
 
-      // Draw
-      var delta = size/40.0;
-      var angleStep = 360/this.sCount*.5;
+       // Bottom of cube
+       gl.uniform4f(u_FragColor, rgba[0]*.9, rgba[1]*.9, rgba[2]*.9, rgba[3]);
+       drawTriangle3DUV([0,0,0,  1,0,1,  0,0,1], [0,0, 1,1, 1,0]);
+       drawTriangle3DUV([0,0,0,  1,0,0,  1,0,1], [0,0, 0,1, 1,1]);
 
-      for(var angle = 0; angle <= 360; angle += angleStep){
-         let centerPt = [xy[0], xy[1]];
-         let angle1 = angle;
-         let angle2 = angle + angleStep;
-         let vec1 = [Math.cos(angle1*Math.PI/180)*delta, Math.sin(angle1*Math.PI/180)*delta];
-         let vec2 = [Math.cos(angle2*Math.PI/180)*delta, Math.sin(angle2*Math.PI/180)*delta];
-         let pt1 = [centerPt[0]+vec1[0], centerPt[1]+vec1[1]];
-         let pt2 = [centerPt[0]+vec2[0], centerPt[1]+vec2[1]];
+       // Left side of cube
+       gl.uniform4f(u_FragColor, rgba[0]*.8, rgba[1]*.8, rgba[2]*.8, rgba[3]);
+       drawTriangle3DUV([1,0,0,  1,1,1,  1,1,0], [0,0, 1,1, 1,0]);
+       drawTriangle3DUV([1,0,0,  1,0,1,  1,1,1], [0,0, 0,1, 1,1]);
 
-         drawTriangle([xy[0], xy[1], pt1[0], pt1[1], pt2[0], pt2[1]]);
-      }
+       // Right side of cube
+       gl.uniform4f(u_FragColor, rgba[0]*.8, rgba[1]*.8, rgba[2]*.8, rgba[3]);
+       drawTriangle3DUV([0,0,0,  0,1,1,  0,1,0], [0,0, 1,1, 1,0]);
+       drawTriangle3DUV([0,0,0,  0,0,1,  0,1,1], [0,0, 0,1, 1,1]);
+
+       // Back of cube
+       gl.uniform4f(u_FragColor, rgba[0]*.7, rgba[1]*.7, rgba[2]*.7, rgba[3]);
+       drawTriangle3DUV([0,0,1,  1,1,1,  0,1,1], [0,0, 1,1, 1,0]);
+       drawTriangle3DUV([0,0,1,  1,0,1,  1,1,1], [0,0, 0,1, 1,1]);
+   }
+
+   renderfast(){
+       var rgba = this.color;
+       gl.uniform1i(u_whichTexture, this.textureNum);
+       gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
+       gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+       
+       var allverts = [];
+
+       // Front of cube
+       allverts = allverts.concat([0,0,0, 1,1,0, 1,0,0]);
+       allverts = allverts.concat([0,0,0, 0,1,0, 1,1,0]);
+
+       // Top of cube
+       allverts = allverts.concat([0,1,0, 0,1,1, 1,1,1]);
+       allverts = allverts.concat([0,1,0, 1,1,1, 1,1,0]);
+
+       // Bottom of cube
+       allverts = allverts.concat([0,1,0, 0,1,1, 1,1,1]);
+       allverts = allverts.concat([0,1,0, 1,1,1, 1,1,0]);
+
+       // Right of cube
+       allverts = allverts.concat([0,0,0, 1,0,1, 0,0,1]);
+       allverts = allverts.concat([0,0,0, 1,0,0, 1,0,1]);
+
+       // Left of cube
+       allverts = allverts.concat([1,0,0, 1,1,1, 1,1,0]);
+       allverts = allverts.concat([1,0,0, 1,0,1, 1,1,1]);
+
+       // Back of cube
+       allverts = allverts.concat([0,0,1, 1,1,1, 0,1,1]);
+       allverts = allverts.concat([0,0,1, 1,0,1, 1,1,1]);
+
+       
+       // // var n = this.verts.length/3; 
+
+       // if(g_vertexBuffer == null){
+       //     initTriagnle3D();
+       // }
+   
+       // Write date into the buffer object
+       // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(allverts), gl.DYNAMIC_DRAW);
+   
+       // gl.drawArrays(gl.TRIANGLES, 0, 36);
+
+
+       drawTriangle3D(allverts);
+   }
+
+   renderfaster(){
+       var rgba = this.color;                                           // set rgba to the ith point's color field
+       
+       // Pass the texture number
+       gl.uniform1i(u_whichTexture, this.textureNum);
+       // Pass the color of point to u_FragColor
+       gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);  
+       // Pass the matrix to u_ModelMatrix attribute 
+       gl.uniformMatrix4fv(u_ModelMatrix, false, this.matrix.elements);
+       
+       drawTriangle3DUV(this.verts, this.uvVerts);
    }
 }
