@@ -101,5 +101,24 @@ class Camera{
       this.at = this.eye.add(f_prime);
     }
     
-
+    panLeft(degrees) {
+      let rad = degrees * Math.PI / 180.0;
+      let rotationMatrix = new Matrix4().setRotate(rad, this.up.elements[0], this.up.elements[1], this.up.elements[2]);
+      let direction = new Vector3();
+      direction.set(this.at).sub(this.eye);
+      direction = rotationMatrix.multiplyVector3(direction);
+      this.at.set(this.eye).add(direction);
+    }
+    
+    panUp(degrees) {
+      let rad = degrees * Math.PI / 180.0;
+      let look = new Vector3();
+      look.set(this.at).sub(this.eye);
+      let right = Vector3.cross(this.up, look);
+      right.normalize();
+      let rotationMatrix = new Matrix4().setRotate(rad, right.elements[0], right.elements[1], right.elements[2]);
+      look = rotationMatrix.multiplyVector3(look);
+      this.at.set(this.eye).add(look);
+    }
+    
 }

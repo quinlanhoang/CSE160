@@ -63,6 +63,12 @@ let u_Sampler1;
 let u_Sampler2;
 let u_Sampler3;
 
+// FPS tracking
+var g_lastFrameTime = performance.now();
+var g_frameCount = 0;
+var g_fps = 0;
+
+// Chairzard
 let g_charON            = false;
 let g_CharAnimation     = true;
 let g_CharHoverLocation = -.3;
@@ -375,6 +381,20 @@ function main(){
     // Clear <canvas>    
     // gl.clear(gl.COLOR_BUFFER_BIT); 
     requestAnimationFrame(tick);
+
+    canvas.addEventListener('mousedown', (e) => {
+      canvas.requestPointerLock();
+    });
+    
+    document.addEventListener('mousemove', (e) => {
+      if (document.pointerLockElement === canvas) {
+        let sensitivity = 0.25;
+        g_camera.panLeft(-e.movementX * sensitivity); // Yaw
+        g_camera.panUp(-e.movementY * sensitivity);   // Pitch
+        renderAllShapes();
+      }
+    });
+    
 }
 
 function tick(){
@@ -382,6 +402,16 @@ function tick(){
     updateAnimationTransformations();                   // update the angles of my animated blocks
     renderAllShapes();                                  // draw everything
     requestAnimationFrame(tick);                        // tell the browser to update again when it can
+
+    // FPS counter
+    let currentTime = performance.now();
+    g_frameCount++;
+    if (currentTime - g_lastFrameTime >= 1000) {
+       g_fps = g_frameCount;
+       g_frameCount = 0;
+       g_lastFrameTime = currentTime;
+       document.getElementById('fpsCounter').innerText = g_fps;
+    }
 }
 
 function updateAnimationTransformations(){
